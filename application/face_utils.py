@@ -1,3 +1,4 @@
+import os
 import cv2
 import torch
 import pickle
@@ -5,13 +6,15 @@ from facenet_pytorch import MTCNN, InceptionResnetV1
 from PIL import Image
 import time
 
+# Set device for model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 mtcnn = MTCNN(keep_all=False, device=device)
 resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 
+PROFILE_DIR = 'customer_data'
 
 class FaceRecognition:
-    def __init__(self) -> None:
+    def __init__(self):
         pass
 
     def capture_face(self):
@@ -40,15 +43,14 @@ class FaceRecognition:
             face = mtcnn(img)
             if face is not None:
                 face_embedding = resnet(face.unsqueeze(0)).detach().cpu()
-                print("Face detected!")
-                break  # Exit 
 
-            # Opening the camera after 5 seconds
+                break  # Exit loop after detecting face
+
+            # Timeout after 5 seconds
             if time.time() - start_time > 5:
                 print("Timeout: No face detected within 5 seconds.")
                 break
 
-            # To ensure the frame window is visible
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
@@ -57,21 +59,28 @@ class FaceRecognition:
 
         return face_embedding
 
-
-
-    # Function used to load all the face embeddings in the program   
-    # To make : load and save functions 
     def load_known_faces(self):
-        return [],[]
+        """
+        Loads all known face embeddings and names from saved profiles.
+        """
+        known_face_encodings = []
+        known_face_names = []
+
+        for file in os.listdir(PROFILE_DIR):
+            if file.endswith('.pkl'):
+                with open(os.path.join(PROFILE_DIR, file), 'rb') as f:
+                    customer_data = pickle.load(f)
+                    known_face_names.append(customer_data['name'])
+                    known_face_encodings.append(customer_data['face_encoding'])
+
+        return known_face_encodings, known_face_names
 
 
-
-    # register function will be in main code 
-    def verify_face(self):
+    def verify_face(self,face_embedding):
         known_face_encodings, known_face_names = self.load_known_faces()
 
         print("Verifying user. Camera will be open for 5 seconds.")
-        face_embedding = self.capture_face()
+        
 
         if face_embedding is None:
             print("Face not detected. Please try again.")
@@ -79,20 +88,15 @@ class FaceRecognition:
 
         # Compare captured face embedding to known faces
         distances = [torch.dist(face_embedding, known_face).item() for known_face in known_face_encodings]
-        
+
         if distances:
             min_distance = min(distances)
             best_match_index = distances.index(min_distance)
 
             # Threshold for verification
             if min_distance < 0.7:
-                print(f"Verified! Welcome back, {known_face_names[best_match_index]}")
+                return known_face_names[best_match_index];
             else:
-                print("Face not recognized. Please try again.")
+                return -1
         else:
-            print("No faces registered yet.")
-
-
-
-    # Register face function is yet to be made 
-    
+            return None
