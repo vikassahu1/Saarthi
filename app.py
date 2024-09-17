@@ -19,12 +19,11 @@ def index():
 
 
 @app.route('/enroll', methods=['GET', 'POST'])
-def enroll():
-    
+def enroll():  
     if request.method == 'POST':
         try:
-            speak_code("Enrollment process started")
-            speak_code("Kindly enter your name")
+            # speak_code("Enrollment process started")
+            # speak_code("Kindly enter your name")
             # Get the customer name from the form
             customer_name = request.form['name']
             
@@ -33,7 +32,7 @@ def enroll():
                 return redirect(url_for('enroll'))
             
             
-            speak_code("Voice Recording for verification will start after this msg kindly speak any thing for five seconds")
+            speak_code("Voice Recording for verification will start after this msg. Kindly speak any thing for five seconds")
             # Step 1: Record voice
             voice_recognition = VoiceRecognition()
             enrollment_audio_file = voice_recognition.record_audio()
@@ -41,7 +40,7 @@ def enroll():
             voice_encoding = voice_recognition.extract_voice_embedding(enrollment_audio_file)
 
             # Step 2: Capture face
-            speak_code("Photo capture will start 5 seconds after this msg kindly sit in front of camera and make a smile")
+            speak_code("Photo capture will start 5 seconds after this msg. Kindly sit in front of camera and make a smile")
             face_recognition = FaceRecognition()
             face_embedding = face_recognition.capture_face()
 
@@ -49,7 +48,7 @@ def enroll():
                 speak_code("Face capture failed")
                 flash("Face enrollment failed. Try again.")
                 return redirect(url_for('enroll'))
-            speak_code("Face capture successful")
+            speak_code("Face captured successfully")
 
             # Step 3: Save the customer
             customer = Customer(name=customer_name, face_encoding=face_embedding, voice_encoding=voice_encoding)
@@ -57,13 +56,16 @@ def enroll():
 
             speak_code(f"{customer_name} has been successfully enrolled!")
             flash(f"{customer_name} has been successfully enrolled!")
-            return redirect(url_for('enroll'))
+            return redirect(url_for('/'))
 
         except Exception as e:
             # Handle any exceptions during the process
             raise CustomException(e, sys)
-
     return render_template('register.html')
+
+
+
+
 
 
 

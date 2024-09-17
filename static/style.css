@@ -52,3 +52,10 @@ header h1{
 .btn-block {
     text-align: center; /* Center text in buttons */
 }
+
+#feedback{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}

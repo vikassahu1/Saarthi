@@ -14,9 +14,9 @@
             </form>
 
             <div id="feedback" class="mt-4" style="display:none;">
-                <p id="step1" style="display:none;">Recording your voice for 5 seconds...</p>
-                <p id="step2" style="display:none;">Capturing your photo in 5 seconds...</p>
-                <p id="step3" style="display:none;">You have been successfully registered!</p>
+                <div class="gif" style="height: 100%;display:flex;align-items: center;justify-content: center;">
+                    <img src="{{ url_for('static', filename='Animation.gif') }}" alt="">
+                </div>
             </div>
         </div>
     </div>
@@ -24,29 +24,12 @@
     <!-- JS Code to simulate feedback -->
     <script>
         document.getElementById("registerForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Stop form submission to handle steps
+            // event.preventDefault(); // Stop form submission to handle steps
+            event.target.submit();
             var nameField = document.getElementById("name").value;
             if (nameField) {
                 document.getElementById("registerForm").style.display = "none"; // Hide the form
-                document.getElementById("feedback").style.display = "block"; // Show feedback section
-
-                // Step 1: Voice recording for 5 seconds
-                document.getElementById("step1").style.display = "block";
-                setTimeout(function() {
-                    document.getElementById("step1").style.display = "none";
-
-                    // Step 2: Notify for photo capture in 5 seconds
-                    document.getElementById("step2").style.display = "block";
-                    setTimeout(function() {
-                        document.getElementById("step2").style.display = "none";
-
-                        // Step 3: Confirmation of registration
-                        document.getElementById("step3").style.display = "block";
-                        
-                        // Now submit the form to Flask
-                        event.target.submit();
-                    }, 5000); // Photo capture wait time
-                }, 5000); // Voice recording wait time
+                document.getElementById("feedback").style.display = "block"; 
             }
         });
     </script>
