@@ -7,7 +7,7 @@ from scipy.io.wavfile import write
 import librosa
 import torch
 from speechbrain.pretrained import SpeakerRecognition
-from exceptions import CustomException
+from .exceptions import CustomException
 
 verification = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir="pretrained_models")
 

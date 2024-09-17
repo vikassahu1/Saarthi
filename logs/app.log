@@ -1,0 +1,17 @@
+2024-09-16 14:38:00,419 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-09-16 14:38:00,419 - [33mPress CTRL+C to quit[0m
+2024-09-16 15:12:05,246 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-09-16 15:12:05,247 - [33mPress CTRL+C to quit[0m
+2024-09-17 12:53:25,671 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-09-17 12:53:25,671 - [33mPress CTRL+C to quit[0m
+2024-09-17 12:53:36,283 - Rendering index page.
+2024-09-17 12:53:36,302 - 127.0.0.1 - - [17/Sep/2024 12:53:36] "GET / HTTP/1.1" 200 -
+2024-09-17 12:53:36,474 - 127.0.0.1 - - [17/Sep/2024 12:53:36] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2024-09-17 12:53:36,535 - 127.0.0.1 - - [17/Sep/2024 12:53:36] "[36mGET /static/logos.png HTTP/1.1[0m" 304 -
+2024-09-17 12:53:36,545 - 127.0.0.1 - - [17/Sep/2024 12:53:36] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-09-17 12:53:38,310 - 127.0.0.1 - - [17/Sep/2024 12:53:38] "[31m[1mGET /enroll HTTP/1.1[0m" 405 -
+2024-09-17 12:53:43,736 - 127.0.0.1 - - [17/Sep/2024 12:53:43] "[31m[1mGET /enroll HTTP/1.1[0m" 405 -
+2024-09-17 12:53:49,198 - 127.0.0.1 - - [17/Sep/2024 12:53:49] "[31m[1mGET /enroll HTTP/1.1[0m" 405 -

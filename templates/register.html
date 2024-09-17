@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %} Register {% endblock title %}
+
+{% block body %}
+    <div class="card mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <h2 class="card-title mb-4">Register</h2>
+            <form id="registerForm" method="POST" action="{{ url_for('enroll') }}">
+                <div class="form-group">
+                    <label for="name">Customer Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Enter</button>
+            </form>
+
+            <div id="feedback" class="mt-4" style="display:none;">
+                <p id="step1" style="display:none;">Recording your voice for 5 seconds...</p>
+                <p id="step2" style="display:none;">Capturing your photo in 5 seconds...</p>
+                <p id="step3" style="display:none;">You have been successfully registered!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Code to simulate feedback -->
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Stop form submission to handle steps
+            var nameField = document.getElementById("name").value;
+            if (nameField) {
+                document.getElementById("registerForm").style.display = "none"; // Hide the form
+                document.getElementById("feedback").style.display = "block"; // Show feedback section
+
+                // Step 1: Voice recording for 5 seconds
+                document.getElementById("step1").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("step1").style.display = "none";
+
+                    // Step 2: Notify for photo capture in 5 seconds
+                    document.getElementById("step2").style.display = "block";
+                    setTimeout(function() {
+                        document.getElementById("step2").style.display = "none";
+
+                        // Step 3: Confirmation of registration
+                        document.getElementById("step3").style.display = "block";
+                        
+                        // Now submit the form to Flask
+                        event.target.submit();
+                    }, 5000); // Photo capture wait time
+                }, 5000); // Voice recording wait time
+            }
+        });
+    </script>
+{% endblock body %}

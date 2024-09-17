@@ -1,10 +1,9 @@
 import os
 import sys
-from face_utils import FaceRecognition
-from voice_utils import VoiceRecognition
-from customer_manager import Customer
-from exceptions import CustomException
-
+from .face_utils import FaceRecognition
+from .voice_utils import VoiceRecognition
+from .customer_manager import Customer
+from .exceptions import CustomException
 
 PROFILE_DIR = 'customer_data'
 

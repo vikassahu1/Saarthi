@@ -1,0 +1,54 @@
+/* Custom styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F9F9F9; /* Light Gray Background */
+}
+
+.logo {
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+    border-radius: 50%;
+}
+
+header {
+    border-bottom: 5px solid #007BFF; /* Blue Bottom Border */
+    background-color: #aebbc8;
+    color: black;
+}
+header h1{
+    font-size: 2.5vmax;
+    font-weight: 900;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0,0.8);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+    font-weight: 900;
+}
+
+.btn-primary {
+    background-color: #aebbc8; /* Blue Background */
+    color: black;
+    font-weight: 900;
+    border: 2px solid #000000; /* Blue Border */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker Blue Background on Hover */
+    border-color: #4882c1; /* Darker Blue Border on Hover */
+}
+
+.btn-block {
+    text-align: center; /* Center text in buttons */
+}
