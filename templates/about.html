@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <h1>About Us</h1>
+    <p id="about-text">{{ about_text }}</p>
+</div>
+
+<!-- Optional: You can add a back button or other navigation options -->
+<div class="container mt-3">
+    <a href="/" class="btn btn-primary">Go Back Home</a>
+</div>
+
+<script>
+    // Send the 'about_text' to the backend to trigger the speech when the page loads
+    window.onload = function() {
+        var aboutText = document.getElementById('about-text').innerText;
+
+        // Use fetch to send the text to the server for speaking
+        fetch('/speak_about_text', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: aboutText })
+        });
+    };
+</script>
+{% endblock body %}

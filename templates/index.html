@@ -8,9 +8,32 @@
             <h2 class="card-title mb-4">Menu</h2>
             <ul class="list-unstyled">
                 <li><a href="{{ url_for('enroll') }}" class="btn btn-primary btn-block mb-3">Register</a></li>
-                <li><a href="{{ url_for('enroll') }}" class="btn btn-primary btn-block mb-3">Verify</a></li>
-                <li><a href="{{ url_for('enroll') }}" class="btn btn-primary btn-block">About Us</a></li>
+                <li><a href="{{ url_for('verify') }}" class="btn btn-primary btn-block mb-3">Verify</a></li>
+                <li><a href="{{ url_for('about') }}" class="btn btn-primary btn-block">About Us</a></li>
             </ul>
         </div>
     </div>
+
+
+    
+    <script>
+        window.onload = function() {
+            fetch('/assist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())  // Parse JSON response
+            .then(data => {
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;  // Redirect to the URL sent from Flask
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    </script>
+    
+    
 {% endblock body %}

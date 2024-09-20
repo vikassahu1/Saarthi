@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} Verify {% endblock title %}
+
+{% block body %}
+
+<div class="card mx-auto" style="max-width: 400px;">
+    <div class="card-body">
+        <h2 class="card-title mb-4">Verification</h2>
+        <div class="gif" style="height: 100%; display:flex; align-items: center; justify-content: center;">
+            <img src="{{ url_for('static', filename='Animation.gif') }}" alt="">
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to send POST request
+    function sendPostRequest() {
+        fetch('{{ request.path }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})  // Empty body, modify if you need to send data
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check if there is a redirect URL in the response
+            if (data.redirect_url) {
+                window.location.href = data.redirect_url;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', sendPostRequest);
+</script>
+
+{% endblock body %}

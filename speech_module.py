@@ -21,30 +21,18 @@ def speak_code(code):
     engine.runAndWait()
 
 
-def listen_to_speech():
-    # Initialize the recognizer
-    recognizer = sr.Recognizer()
-
-    # Use the microphone as the audio source
+def listen_for_command():
+    r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Please speak...")
-        # Adjust for ambient noise
-        recognizer.adjust_for_ambient_noise(source)
-
-        # Capture the audio from the microphone
-        audio = recognizer.listen(source)
-
-    try:
-        # Use Google Web Speech API to recognize the speech
-        text = recognizer.recognize_google(audio)
-        print(f"You said: {text}")
-        return text
-    except sr.UnknownValueError:
-        print("Sorry, I could not understand the audio.")
-    except sr.RequestError:
-        print("Sorry, the speech recognition service is unavailable.")
-
-# Example usage
-if __name__ == "__main__":
-    speak_code("Speak the bitch")
-    listen_to_speech()
+        print("Listening for command...")
+        audio = r.listen(source)
+        try:
+            command = r.recognize_google(audio)
+            print(f"User said: {command}")
+            return command
+        except sr.UnknownValueError:
+            speak_code("Sorry, I could not understand your command. Please try again.")
+            return ""
+        except sr.RequestError:
+            speak_code("Sorry, there was an error with the speech recognition service.")
+            return ""
