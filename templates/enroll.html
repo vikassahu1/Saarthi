@@ -2,35 +2,37 @@
 {% block title %} Register {% endblock title %}
 
 {% block body %}
-    <div class="card mx-auto" style="max-width: 400px;">
-        <div class="card-body">
-            <h2 class="card-title mb-4">Register</h2>
-            <form id="registerForm" method="POST" action="{{ url_for('enroll') }}">
-                <div class="form-group">
-                    <label for="name">Customer Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Enter</button>
-            </form>
-
-            <div id="feedback" class="mt-4" style="display:none;">
-                <div class="gif" style="height: 100%;display:flex;align-items: center;justify-content: center;">
-                    <img src="{{ url_for('static', filename='Animation.gif') }}" alt="">
-                </div>
-            </div>
+<div class="card mx-auto" style="max-width: 400px;">
+    <div class="card-body">
+        <h2 class="card-title mb-4">Register</h2>
+        <div class="gif" style="height: 100%; display:flex; align-items: center; justify-content: center;">
+            <img src="{{ url_for('static', filename='Animation.gif') }}" alt="">
         </div>
     </div>
+</div>
 
     <!-- JS Code to simulate feedback -->
     <script>
-        document.getElementById("registerForm").addEventListener("submit", function(event) {
-            // event.preventDefault(); // Stop form submission to handle steps
-            event.target.submit();
-            var nameField = document.getElementById("name").value;
-            if (nameField) {
-                document.getElementById("registerForm").style.display = "none"; // Hide the form
-                document.getElementById("feedback").style.display = "block"; 
-            }
-        });
+        // Function to send POST request
+        function sendPostRequest() {
+            fetch('{{ request.path }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})  // Empty body, modify if you need to send data
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check if there is a redirect URL in the response
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', sendPostRequest);
     </script>
 {% endblock body %}

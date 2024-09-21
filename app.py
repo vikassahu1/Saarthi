@@ -7,7 +7,7 @@ from application.face_utils import FaceRecognition
 from application.voice_utils import VoiceRecognition
 from application.customer_manager import Customer
 from application.exceptions import CustomException
-from speech_module import speak_code,listen_for_command
+from speech_module import speak_code,listen_for_command,listen_for_command2,capture_full_name,confirm_name
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # For flash messages
@@ -48,42 +48,45 @@ def assist():
 
 # Enrollment part 
 @app.route('/enroll', methods=['GET', 'POST'])
-def enroll():  
-    if request.method == 'GET':
-        return render_template('enroll.html')
+def enroll(): 
     if request.method == 'POST':
         try:
-            # speak_code("Enrollment process started")
-            # speak_code("Kindly enter your name")
-            # Get the customer name from the form
+            customer_name = None
+            while customer_name is None:
+                # Capture the full name at once
+                full_name = capture_full_name()
 
+                # Confirm the name with the user
+                if confirm_name(full_name):
+                    customer_name = full_name
+                else:
+                    speak_code("Let's try again.")
 
-
-
-            customer_name = request.form['name']
-            
             if not customer_name:
-                flash("Please enter a valid name.")
-                return redirect(url_for('enroll'))
+                flash("Please provide a valid name. Lets try again")
+                return jsonify({'redirect_url': url_for('enroll')})
             
+            # After confirming the name, proceed with voice and face enrollment
+            speak_code(f"Enrolling {customer_name}. Please proceed with voice and face recording.")
+
             
-            speak_code("Voice Recording for verification will start after this msg. Kindly speak any thing for five seconds")
+            speak_code(".Voice Recording for verification will start after this msg. Kindly speak any thing for five seconds")
             # Step 1: Record voice
             voice_recognition = VoiceRecognition()
             enrollment_audio_file = voice_recognition.record_audio()
-            speak_code("Voice recorded successfully")
+            speak_code(".Voice recorded successfully")
             voice_encoding = voice_recognition.extract_voice_embedding(enrollment_audio_file)
 
             # Step 2: Capture face
             time.sleep(0.5)
-            speak_code("Photo capture will start 5 seconds after this msg. Kindly sit in front of camera and make a smile")
+            speak_code(".Photo capture will start 5 seconds after this msg. Kindly sit in front of camera and make a smile")
             face_recognition = FaceRecognition()
             face_embedding = face_recognition.capture_face()
 
             if face_embedding is None:
-                speak_code("Face capture failed")
+                speak_code(".Face capture failed")
                 flash("Face enrollment failed. Try again.")
-                return redirect(url_for('index'))
+                return jsonify({'redirect_url': url_for('index')})
             time.sleep(0.5)
             speak_code("Face captured successfully")
 
@@ -93,7 +96,7 @@ def enroll():
 
             speak_code(f"{customer_name} has been successfully enrolled!")
             flash(f"{customer_name} has been successfully enrolled!")
-            return redirect(url_for('index'))
+            return jsonify({'redirect_url': url_for('index')})
 
         except Exception as e:
             # Handle any exceptions during the process
@@ -126,7 +129,7 @@ def verify():
 
             if face_embedding is None:
                 speak_code("Face capture failed")
-                flash("Face verification failed. Try again.")
+                flash(".Face verification failed. Try again.")
                 return jsonify({'redirect_url': url_for('verify')})
 
             time.sleep(0.5)
